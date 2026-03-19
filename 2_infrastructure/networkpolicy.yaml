@@ -1,0 +1,42 @@
+##Default Deny in DB Namespace
+
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: db-default-deny
+  namespace: db
+spec:
+  podSelector: {}
+  policyTypes:
+    - Ingress
+
+What this does:
+Blocks ALL incoming traffic to db namespace
+No pod (including frontend) can reach db
+
+###############################################################
+
+Allow ONLY specific traffic
+
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-backend-to-db
+  namespace: db
+spec:
+  podSelector:
+    matchLabels:
+      app: db
+  policyTypes:
+    - Ingress
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              name: backend
+        - podSelector:
+            matchLabels:
+              app: backend
+      ports:
+        - protocol: TCP
+          port: 5432

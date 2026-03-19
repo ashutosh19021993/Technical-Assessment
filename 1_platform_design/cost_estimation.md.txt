@@ -1,0 +1,137 @@
+Cost Estimation (AWS eu-central-1)
+Overview
+
+This section provides an estimated monthly cost for running the multi-tenant platform in the AWS eu-central-1 (Frankfurt) region. The estimate is based on a baseline shared platform supporting approximately 20+ teams, with the ability to scale.
+
+The goal is to:
+
+provide a realistic cost baseline
+
+identify major cost drivers
+
+highlight optimization strategies
+
+Assumptions
+
+The estimation is based on the following setup:
+
+1 Amazon EKS cluster (standard support)
+
+3 worker nodes (medium-sized instances)
+
+1 NAT Gateway
+
+1 Application Load Balancer (ALB)
+
+1 small RDS PostgreSQL instance
+
+moderate S3 usage
+
+OpenTelemetry + New Relic integration
+
+workloads distributed across 3 AZs
+
+Estimated Monthly Cost Breakdown
+1. Amazon EKS (Control Plane)
+
+~$0.10/hour
+
+~$70–75/month
+
+2. Worker Nodes (EC2)
+
+Example:
+
+3 × t3.medium / m5.large instances
+
+Estimated:
+
+~$250–450/month
+
+This will increase as teams and workloads grow.
+
+3. NAT Gateway
+
+~$0.045/hour → ~$32/month
+
+Data processing charges (~$0.045/GB)
+
+Estimated:
+
+~$35–80/month (depending on traffic)
+
+4. Application Load Balancer (ALB)
+
+base hourly cost + LCU usage
+
+Estimated:
+
+~$20–40/month
+
+5. Amazon RDS (PostgreSQL)
+
+Example:
+
+small instance (e.g., db.t3.medium)
+
+Estimated:
+
+~$80–180/month
+
+Multi-AZ or higher instance sizes will increase cost.
+
+6. Amazon S3
+
+storage + requests
+
+Estimated:
+
+~$20–50/month
+
+7. Observability (New Relic + OTel)
+
+based on data ingestion (logs, metrics, traces)
+
+Estimated:
+
+~$50–150/month (can vary significantly)
+
+Total Estimated Cost
+Component	Estimated Monthly Cost
+EKS	$70–75
+EC2 (Nodes)	$250–450
+NAT Gateway	$35–80
+ALB	$20–40
+RDS	$80–180
+S3	$20–50
+Observability	$50–150
+Total	~$500–900/month
+Cost Drivers
+
+The main contributors to cost are:
+
+worker nodes (compute usage)
+
+RDS instance size and HA configuration
+
+NAT Gateway data processing
+
+observability data ingestion
+
+number of workloads and traffic volume
+
+Cost Scaling (20 → 50+ Teams)
+
+As the platform grows:
+
+more nodes will be required → increased EC2 cost
+
+higher traffic → increased ALB and NAT cost
+
+more telemetry → higher observability cost
+
+some teams may require dedicated infrastructure → increased cost per tenant
+
+Estimated scaled cost:
+
+~$1000–3000+/month, depending on workload size and isolation requirements
